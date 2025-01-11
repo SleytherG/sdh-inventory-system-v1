@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sdh.store.inventory.manager.category.mappers.CategoryMapper">
+
+    <resultMap id="CategoryResultMap" type="sdh.store.inventory.manager.category.dto.CategoryDTO">
+        <id property="id" column="ID" />
+        <result property="name" column="NAME" />
+        <result property="description" column="DESCRIPTION" />
+        <result property="isActive" column="IS_ACTIVE" />
+    </resultMap>
+
+
+    <select id="findAllCategories" resultMap="CategoryResultMap">
+        SELECT
+            C.ID                  AS ID,
+            C.NAME                AS NAME,
+            C.DESCRIPTION         AS DESCRIPTION,
+            C.IS_ACTIVE           AS IS_ACTIVE
+        FROM CATEGORY C
+        ORDER BY C.ID
+    </select>
+
+
+    <insert id="createCategory">
+        INSERT INTO CATEGORY (NAME, DESCRIPTION, IS_ACTIVE)
+        VALUES (#{category.name}, #{category.description}, #{category.isActive})
+    </insert>
+
+    <select id="getCategoryById" resultMap="CategoryResultMap">
+        SELECT
+            C.ID                  AS ID,
+            C.NAME                AS NAME,
+            C.DESCRIPTION         AS DESCRIPTION,
+            C.IS_ACTIVE           AS IS_ACTIVE
+        FROM CATEGORY C
+        WHERE ID = #{ id }
+    </select>
+
+    <update id="updateCategory">
+        UPDATE CATEGORY
+        SET NAME = #{category.name},
+            DESCRIPTION = #{category.description},
+            IS_ACTIVE = #{category.isActive}
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="deleteCategory">
+        UPDATE CATEGORY
+        SET IS_ACTIVE = FALSE
+        WHERE ID = #{id}
+    </delete>
+</mapper>

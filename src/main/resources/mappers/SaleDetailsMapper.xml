@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sdh.store.inventory.manager.sale_details.mappers.SaleDetailsMapper">
+
+    <resultMap id="SalesDTOResultMap" type="sdh.store.inventory.manager.sale_details.dto.SaleDetailsDTO">
+        <id property="id" column="SALES_ID" />
+        <result property="quantity" column="QUANTITY" />
+        <result property="unitPrice" column="UNIT_PRICE" />
+        <result property="subTotal" column="SUB_TOTAL" />
+
+        <association property="product" javaType="sdh.store.inventory.manager.sale_details.dto.ProductSaleDetailsDTO">
+            <id property="id" column="ID_CATEGORY" />
+            <result property="name" column="PRODUCT_NAME" />
+            <result property="description" column="PRODUCT_DESCRIPTION" />
+            <result property="price" column="PRODUCT_PRICE" />
+            <result property="stockQuantity" column="PRODUCT_STOCK_QUANTITY" />
+        </association>
+    </resultMap>
+
+
+<!--    <select id="findAllSales" resultMap="SalesDTOResultMap">-->
+<!--        SELECT-->
+<!--            S.ID                            AS SALES_ID,-->
+<!--            S.CUSTOMER_FULL_NAME            AS CUSTOMER_FULL_NAME,-->
+<!--            S.CUSTOMER_DOCUMENT_NUMBER      AS CUSTOMER_DOCUMENT_NUMBER,-->
+<!--            S.TOTAL_AMOUNT                  AS SALE_TOTAL_AMOUNT,-->
+<!--            S.PAYMENT_METHOD                AS PAYMENT_METHOD,-->
+<!--            S.SALE_DATE                     AS SALE_DATE,-->
+<!--            S.REFERENCE_DOCUMENT            AS REFERENCE_DOCUMENT,-->
+<!--            S.REFERENCE_DOCUMENT_TYPE       AS REFERENCE_DOCUMENT_TYPE-->
+<!--        FROM SALES S-->
+<!--        ORDER BY S.SALE_DATE DESC-->
+<!--    </select>-->
+
+
+    <insert id="createSaleDetails" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO SALE_DETAILS (sale_id, product_id, quantity, unit_price, subtotal)
+        VALUES (#{saleDetails.saleId}, #{saleDetails.productId}, #{saleDetails.quantity}, #{saleDetails.unitPrice}, #{saleDetails.subTotal})
+    </insert>
+
+<!--    <select id="getCategoryById" resultMap="CategoryResultMap">-->
+<!--        SELECT-->
+<!--            C.ID                  AS ID,-->
+<!--            C.NAME                AS NAME,-->
+<!--            C.DESCRIPTION         AS DESCRIPTION,-->
+<!--            C.IS_ACTIVE           AS IS_ACTIVE-->
+<!--        FROM CATEGORY C-->
+<!--        WHERE ID = #{ id }-->
+<!--    </select>-->
+
+<!--    <update id="updateCategory">-->
+<!--        UPDATE CATEGORY-->
+<!--        SET NAME = #{category.name},-->
+<!--            DESCRIPTION = #{category.description},-->
+<!--            IS_ACTIVE = #{category.isActive}-->
+<!--        WHERE ID = #{id}-->
+<!--    </update>-->
+
+<!--    <delete id="deleteCategory">-->
+<!--        UPDATE CATEGORY-->
+<!--        SET IS_ACTIVE = FALSE-->
+<!--        WHERE ID = #{id}-->
+<!--    </delete>-->
+</mapper>

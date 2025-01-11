@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: store-inventory-manager-v1
+  datasource:
+    url: jdbc:postgresql://localhost:5432/store_senor_de_huanca
+    username: postgres
+    password: 20051996
+  cloud:
+    config:
+      enabled: false
+      import-check:
+        enabled: false
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: sdh.store.inventory.manager.model
+
+
+base:
+  url:
+    openFoodFacts: https://world.openfoodfacts.org/
+
+server:
+  port: 9090
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

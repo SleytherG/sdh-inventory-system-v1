@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sdh.store.inventory.manager.movement.mappers.MovementMapper">
+
+    <resultMap id="MovementDTOResultMap" type="sdh.store.inventory.manager.movement.dto.MovementDTO">
+        <id property="id" column="MOVEMENT_ID" />
+        <result property="quantity" column="QUANTITY" />
+        <result property="movementType" column="MOVEMENT_TYPE" />
+        <result property="movementDate" column="MOVEMENT_DATE" />
+        <result property="description" column="DESCRIPTION" />
+        <result property="referenceDocument" column="REFERENCE_DOCUMENT" />
+
+        <association property="product" javaType="sdh.store.inventory.manager.product.dto.ProductMovementDTO">
+            <id property="id" column="PRODUCT_ID" />
+            <result property="name" column="PRODUCT_NAME"/>
+            <result property="description" column="PRODUCT_DESCRIPTION"/>
+            <result property="price" column="PRODUCT_PRICE"/>
+            <result property="stockQuantity" column="PRODUCT_STOCK_QUANTITY"/>
+            <result property="isActive" column="PRODUCT_STATUS"/>
+
+        </association>
+
+        <association property="user" javaType="sdh.store.inventory.manager.user.dto.UserMovementDTO">
+            <id property="id" column="USER_ID" />
+            <result property="fullName" column="FULL_NAME" />
+            <result property="username" column="USERNAME" />
+            <result property="isEnabled" column="IS_ENABLED" />
+        </association>
+
+    </resultMap>
+
+    <resultMap id="CurrentStockDTO" type="sdh.store.inventory.manager.movement.dto.CurrentStockDTO">
+        <result property="currentStock" column="CURRENT_STOCK"/>
+        <result property="productId" column="PRODUCT_ID"/>
+        <result property="productName" column="PRODUCT_NAME"/>
+    </resultMap>
+
+    <select id="findAllMovements" resultMap="MovementDTOResultMap">
+        SELECT
+            M.ID                    AS MOVEMENT_ID,
+            M.MOVEMENT_TYPE         AS MOVEMENT_TYPE,
+            M.QUANTITY              AS QUANTITY,
+            M.MOVEMENT_DATE         AS MOVEMENT_DATE,
+            M.DESCRIPTION           AS DESCRIPTION,
+            M.REFERENCE_DOCUMENT    AS REFERENCE_DOCUMENT,
+            P.ID                    AS PRODUCT_ID,
+            P.NAME                  AS PRODUCT_NAME,
+            P.DESCRIPTION           AS PRODUCT_DESCRIPTION,
+            P.PRICE                 AS PRODUCT_PRICE,
+            P.STOCK_QUANTITY        AS PRODUCT_STOCK_QUANTITY,
+            P.IS_ACTIVE             AS PRODUCT_STATUS,
+            US.ID                   AS USER_ID,
+            US.FULL_NAME            AS FULL_NAME,
+            US.USERNAME             AS USERNAME,
+            US.IS_ENABLED           AS IS_ENABLED
+        FROM MOVEMENT M
+                 LEFT JOIN PRODUCT P ON P.ID = M.PRODUCT_ID
+                 LEFT JOIN USER_STORE US ON US.ID = M.USER_ID
+        ORDER BY M.REFERENCE_DOCUMENT
+    </select>
+
+    <insert id="createMovement" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MOVEMENT (product_id, movement_type, quantity, movement_date, user_id, description, reference_document)
+        VALUES (#{movement.productId}, #{movement.movementType}, #{movement.quantity}, #{movement.movementDate}, #{movement.userId}, #{movement.description}, #{movement.referenceDocument})
+    </insert>
+
+    <select id="findMovementsByProductId" resultMap="MovementDTOResultMap">
+        SELECT
+            M.ID                    AS MOVEMENT_ID,
+            M.MOVEMENT_TYPE         AS MOVEMENT_TYPE,
+            M.QUANTITY              AS QUANTITY,
+            M.MOVEMENT_DATE         AS MOVEMENT_DATE,
+            M.DESCRIPTION           AS DESCRIPTION,
+            M.REFERENCE_DOCUMENT    AS REFERENCE_DOCUMENT,
+            P.ID                    AS PRODUCT_ID,
+            P.NAME                  AS PRODUCT_NAME,
+            P.DESCRIPTION           AS PRODUCT_DESCRIPTION,
+            P.PRICE                 AS PRODUCT_PRICE,
+            P.STOCK_QUANTITY        AS PRODUCT_STOCK_QUANTITY,
+            P.IS_ACTIVE             AS PRODUCT_STATUS,
+            US.ID                   AS USER_ID,
+            US.FULL_NAME            AS FULL_NAME,
+            US.USERNAME             AS USERNAME,
+            US.IS_ENABLED           AS IS_ENABLED
+        FROM MOVEMENT M
+                 LEFT JOIN PRODUCT P ON P.ID = M.PRODUCT_ID
+                 LEFT JOIN USER_STORE US ON US.ID = M.USER_ID
+        WHERE M.PRODUCT_ID = #{productId}
+    </select>
+
+    <select id="findMovementsByReferenceDocument" resultMap="MovementDTOResultMap">
+        SELECT
+            M.ID                    AS MOVEMENT_ID,
+            M.MOVEMENT_TYPE         AS MOVEMENT_TYPE,
+            M.QUANTITY              AS QUANTITY,
+            M.MOVEMENT_DATE         AS MOVEMENT_DATE,
+            M.DESCRIPTION           AS DESCRIPTION,
+            M.REFERENCE_DOCUMENT    AS REFERENCE_DOCUMENT,
+            P.ID                    AS PRODUCT_ID,
+            P.NAME                  AS PRODUCT_NAME,
+            P.DESCRIPTION           AS PRODUCT_DESCRIPTION,
+            P.PRICE                 AS PRODUCT_PRICE,
+            P.STOCK_QUANTITY        AS PRODUCT_STOCK_QUANTITY,
+            P.IS_ACTIVE             AS PRODUCT_STATUS,
+            US.ID                   AS USER_ID,
+            US.FULL_NAME            AS FULL_NAME,
+            US.USERNAME             AS USERNAME,
+            US.IS_ENABLED           AS IS_ENABLED
+        FROM MOVEMENT M
+                 LEFT JOIN PRODUCT P ON P.ID = M.PRODUCT_ID
+                 LEFT JOIN USER_STORE US ON US.ID = M.USER_ID
+        WHERE M.REFERENCE_DOCUMENT = #{referenceDocument}
+    </select>
+
+
+    <select id="getCurrentStockByProductId" resultMap="CurrentStockDTO">
+        SELECT
+            SUM(QUANTITY)   AS CURRENT_STOCK,
+            P.ID            AS PRODUCT_ID,
+            P.NAME          AS PRODUCT_NAME
+        FROM MOVEMENT M
+            LEFT JOIN PRODUCT P ON M.PRODUCT_ID = P.ID
+        WHERE M.PRODUCT_ID = #{productId}
+        GROUP BY P.ID, P.NAME
+    </select>
+
+</mapper>

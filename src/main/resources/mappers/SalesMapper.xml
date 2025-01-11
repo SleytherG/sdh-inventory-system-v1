@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sdh.store.inventory.manager.sales.mappers.SalesMapper">
+
+    <resultMap id="SalesDTOResultMap" type="sdh.store.inventory.manager.sales.dto.SalesDTO">
+        <id property="id" column="SALES_ID" />
+        <result property="customerFullName" column="CUSTOMER_FULL_NAME" />
+        <result property="customerDocumentNumber" column="CUSTOMER_DOCUMENT_NUMBER" />
+        <result property="totalAmount" column="SALE_TOTAL_AMOUNT" />
+        <result property="paymentMethod" column="PAYMENT_METHOD" />
+        <result property="saleDate" column="SALE_DATE" />
+        <result property="referenceDocument" column="REFERENCE_DOCUMENT" />
+        <result property="referenceDocumentType" column="REFERENCE_DOCUMENT_TYPE" />
+    </resultMap>
+
+
+    <select id="findAllSales" resultMap="SalesDTOResultMap">
+        SELECT
+            S.ID                            AS SALES_ID,
+            S.CUSTOMER_FULL_NAME            AS CUSTOMER_FULL_NAME,
+            S.CUSTOMER_DOCUMENT_NUMBER      AS CUSTOMER_DOCUMENT_NUMBER,
+            S.TOTAL_AMOUNT                  AS SALE_TOTAL_AMOUNT,
+            S.PAYMENT_METHOD                AS PAYMENT_METHOD,
+            S.SALE_DATE                     AS SALE_DATE,
+            S.REFERENCE_DOCUMENT            AS REFERENCE_DOCUMENT,
+            S.REFERENCE_DOCUMENT_TYPE       AS REFERENCE_DOCUMENT_TYPE
+        FROM SALES S
+        ORDER BY S.SALE_DATE DESC
+    </select>
+
+
+    <insert id="createSale" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO SALES (customer_full_name, customer_document_number, total_amount, payment_method, sale_date, reference_document, reference_document_type)
+        VALUES (#{sales.customerFullName}, #{sales.customerDocumentNumber}, #{sales.totalAmount}, #{sales.paymentMethod}, #{sales.saleDate}, #{sales.referenceDocument}, #{sales.referenceDocumentType})    </insert>
+    <select id="getLastInsertedId" resultType="java.lang.Integer">
+        SELECT currval(pg_get_serial_sequence('SALES', 'id'))
+    </select>
+
+    <!--    <select id="getCategoryById" resultMap="CategoryResultMap">-->
+<!--        SELECT-->
+<!--            C.ID                  AS ID,-->
+<!--            C.NAME                AS NAME,-->
+<!--            C.DESCRIPTION         AS DESCRIPTION,-->
+<!--            C.IS_ACTIVE           AS IS_ACTIVE-->
+<!--        FROM CATEGORY C-->
+<!--        WHERE ID = #{ id }-->
+<!--    </select>-->
+
+<!--    <update id="updateCategory">-->
+<!--        UPDATE CATEGORY-->
+<!--        SET NAME = #{category.name},-->
+<!--            DESCRIPTION = #{category.description},-->
+<!--            IS_ACTIVE = #{category.isActive}-->
+<!--        WHERE ID = #{id}-->
+<!--    </update>-->
+
+<!--    <delete id="deleteCategory">-->
+<!--        UPDATE CATEGORY-->
+<!--        SET IS_ACTIVE = FALSE-->
+<!--        WHERE ID = #{id}-->
+<!--    </delete>-->
+</mapper>
