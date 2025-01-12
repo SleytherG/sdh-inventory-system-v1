@@ -4,23 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sdh.store.inventory.manager.category.dto.CategoryDTO;
-import sdh.store.inventory.manager.supplier.dto.SupplierDTO;
 
 import java.math.BigDecimal;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class ProductDTO {
+public class ProductUpdateDTO {
 
     private Long id;
     private String name;
     private String description;
     private BigDecimal price;
     private Integer stockQuantity;
-    private CategoryDTO category;
-    private SupplierDTO supplier;
+    private Integer categoryId;
+    private Integer supplierId;
     private Boolean isActive;
+
 }

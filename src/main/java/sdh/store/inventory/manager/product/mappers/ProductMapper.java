@@ -1,20 +1,34 @@
 package sdh.store.inventory.manager.product.mappers;
 
-import org.springframework.stereotype.Component;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import sdh.store.inventory.manager.product.dto.ProductCreateDTO;
 import sdh.store.inventory.manager.product.dto.ProductDTO;
-import sdh.store.inventory.manager.product.model.Product;
+import sdh.store.inventory.manager.product.dto.ProductUpdateDTO;
 
-@Component
-public class ProductMapper {
+import java.util.List;
+import java.util.Optional;
 
-    public static ProductDTO toProductDTO(Product product) {
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setId(product.getId());
-        productDTO.setName(product.getName());
-        productDTO.setDescription(product.getDescription());
-        productDTO.setPrice(product.getPrice());
-        productDTO.setStockQuantity(product.getStockQuantity());
-        productDTO.setActive(product.getActive());
-        return productDTO;
-    }
+@Mapper
+public interface ProductMapper {
+
+    List<ProductDTO> findAllProducts(
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
+
+    Integer createProduct(
+            @Param("product") ProductCreateDTO product
+    );
+
+    Optional<ProductDTO> getProductById(
+            @Param("id") Long id);
+
+    Integer updateProduct(
+            @Param("id") Long id,
+            @Param("product") ProductUpdateDTO product
+    );
+
+    Integer deleteProduct(
+            @Param("id") Long id);
 }
