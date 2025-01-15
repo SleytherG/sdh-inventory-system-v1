@@ -1,6 +1,7 @@
 package sdh.store.inventory.manager.product.service;
 
 
+import com.github.pagehelper.PageInfo;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
 import sdh.store.inventory.manager.product.dto.ProductCreateDTO;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    Flowable<List<ProductDTO>> findAllProducts(int page, int size);
+    Flowable<PageInfo<ProductDTO>> findAllProducts(int page, int size);
 
     Maybe<Integer> createProduct(ProductCreateDTO product);
 

@@ -20,7 +20,7 @@ public class MovementTypeDTO {
     private ProductDTO product;
     private Integer quantity;
     private MovementType movementType;
-    private LocalDateTime movementDate = LocalDateTime.now();
+    private final LocalDateTime movementDate = LocalDateTime.now();
     private UserDTO user;
     private String description;
 

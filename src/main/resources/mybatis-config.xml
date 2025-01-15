@@ -6,4 +6,14 @@
     <settings>
         <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
+
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="helperDialect" value="postgresql" />
+            <property name="reasonable" value="true"/>
+            <property name="supportMethodsArguments" value="true" />
+            <property name="params" value="count=countSql" />
+        </plugin>
+    </plugins>
+
 </configuration>

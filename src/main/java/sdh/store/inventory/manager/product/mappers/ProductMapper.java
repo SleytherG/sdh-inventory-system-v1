@@ -12,10 +12,12 @@ import java.util.Optional;
 @Mapper
 public interface ProductMapper {
 
-    List<ProductDTO> findAllProducts(
-            @Param("limit") int limit,
-            @Param("offset") int offset
-    );
+//    List<ProductDTO> findAllProducts(
+//            @Param("limit") int limit,
+//            @Param("offset") int offset
+//    );
+
+    List<ProductDTO> findAllProducts();
 
     Integer createProduct(
             @Param("product") ProductCreateDTO product

@@ -1,5 +1,7 @@
 package sdh.store.inventory.manager.product.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -19,23 +21,24 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductMapper productMapper;
+    private final ProductMapper productMapper;
 
-    /**
-     * Find all products.
-     *
-     * @return a {@link Flowable} that emits all products as {@link ProductDTO}s
-     */
+    @Autowired
+    public ProductServiceImpl(ProductMapper productMapper) {
+        this.productMapper = productMapper;
+    }
+
     @Override
-    public Flowable<List<ProductDTO>> findAllProducts(int page, int size) {
-        return Flowable.fromCallable(() -> productMapper.findAllProducts(size, calculateOffset(page, size)))
+    public Flowable<PageInfo<ProductDTO>> findAllProducts(int page, int size) {
+        return Flowable.fromCallable(() -> toPageInfo(page, size))
                 .subscribeOn(Schedulers.io())
                 .switchIfEmpty(Flowable.defer(Flowable::empty));
     }
 
-    private Integer calculateOffset(int page,int size) {
-        return page * size;
+    private PageInfo<ProductDTO> toPageInfo(int page, int size) {
+        PageHelper.startPage(page, size);
+        List<ProductDTO> products = productMapper.findAllProducts();
+        return new PageInfo<ProductDTO>(products);
     }
 
     @Override

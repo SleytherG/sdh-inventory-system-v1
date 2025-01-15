@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sdh.store.inventory.manager.user.enumerate.Role;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +16,12 @@ public class UserDTO {
 
     private Long id;
     private String fullName;
-    private Role role;
     private String password;
+    private String username;
+    private Boolean isEnabled;
+    private Boolean accountNoExpired;
+    private Boolean accountNoLocked;
+    private Boolean credentialsNoExpired;
+    private Set<RoleDTO> roles = new HashSet<>();
 
 }

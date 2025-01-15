@@ -4,16 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sdh.store.inventory.manager.product.dto.ProductDTO;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ListProductDTO {
+public class PermissionDTO {
 
-    private List<ProductDTO> products;
+    private Long id;
+    private String permissionName;
 
 }
