@@ -5,11 +5,12 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.*;
-import sdh.store.inventory.manager.auth.config.JwtUtils;
-import sdh.store.inventory.manager.auth.dto.AuthLoginRequest;
-import sdh.store.inventory.manager.auth.dto.AuthResponse;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import sdh.store.inventory.manager.auth.dto.AuthLoginRequestDTO;
+import sdh.store.inventory.manager.auth.dto.AuthResponseDTO;
 import sdh.store.inventory.manager.auth.service.UserDetailServiceImpl;
 
 @RestController
@@ -17,17 +18,11 @@ import sdh.store.inventory.manager.auth.service.UserDetailServiceImpl;
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtUtils jwtUtils;
-
-    @Autowired
     private UserDetailServiceImpl userDetailsService;
 
     @PostMapping(value = "/login")
-    public ResponseEntity<AuthResponse> login(
-            @Parameter(required = true) @RequestBody @Valid AuthLoginRequest userRequest) {
+    public ResponseEntity<AuthResponseDTO> login(
+            @Parameter(required = true) @RequestBody @Valid AuthLoginRequestDTO userRequest) {
         return new ResponseEntity<>(userDetailsService.loginUser(userRequest), HttpStatus.OK);
     }
 }

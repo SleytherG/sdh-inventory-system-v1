@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sdh.store.inventory.manager.auth.config.JwtUtils;
-import sdh.store.inventory.manager.auth.dto.AuthLoginRequest;
-import sdh.store.inventory.manager.auth.dto.AuthResponse;
+import sdh.store.inventory.manager.auth.dto.AuthLoginRequestDTO;
+import sdh.store.inventory.manager.auth.dto.AuthResponseDTO;
 import sdh.store.inventory.manager.user.dto.UserDTO;
 import sdh.store.inventory.manager.user.mappers.UserMapper;
 
@@ -23,11 +23,11 @@ import java.util.List;
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
     public UserDetailServiceImpl(
             UserMapper userMapper,
@@ -63,17 +63,17 @@ public class UserDetailServiceImpl implements UserDetailsService {
         );
     }
 
-    public AuthResponse loginUser(AuthLoginRequest authLoginRequest) {
-        String username = authLoginRequest.username();
-        String password = authLoginRequest.password();
+    public AuthResponseDTO loginUser(AuthLoginRequestDTO authLoginRequestDTO) {
+        String username = authLoginRequestDTO.username();
+        String password = authLoginRequestDTO.password();
 
         Authentication authentication = authenticate(username, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = jwtUtils.createToken(authentication);
 
-        AuthResponse authResponse = new AuthResponse(username, "User logged successfully", accessToken, true);
-        return authResponse;
+        AuthResponseDTO authResponseDTO = new AuthResponseDTO(username, "User logged successfully", accessToken, true);
+        return authResponseDTO;
     }
 
     public Authentication authenticate(String username, String password) {

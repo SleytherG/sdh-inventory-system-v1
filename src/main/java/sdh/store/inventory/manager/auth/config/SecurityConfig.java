@@ -24,7 +24,7 @@ import sdh.store.inventory.manager.auth.service.UserDetailServiceImpl;
 public class SecurityConfig {
 
 
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
     public SecurityConfig(JwtUtils jwtUtils) {
         this.jwtUtils = jwtUtils;
