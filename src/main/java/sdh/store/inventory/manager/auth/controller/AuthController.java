@@ -1,44 +1,33 @@
 package sdh.store.inventory.manager.auth.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-//import sdh.store.inventory.manager.auth.config.JwtUtil;
+import org.springframework.web.bind.annotation.*;
+import sdh.store.inventory.manager.auth.config.JwtUtils;
+import sdh.store.inventory.manager.auth.dto.AuthLoginRequest;
+import sdh.store.inventory.manager.auth.dto.AuthResponse;
+import sdh.store.inventory.manager.auth.service.UserDetailServiceImpl;
 
-//@RestController
-//@RequestMapping(value = "/auth")
-//public class AuthController {
-//
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
-//
-//    @Autowired
-//    private JwtUtil jwtUtil;
-//
-//    @Autowired
-//    private UserDetailsService userDetailsService;
-//
-//    @PostMapping(value = "/login")
-//    public ResponseEntity<?> login(
-//            @RequestParam("username") String username,
-//            @RequestParam("password") String password
-//    ) {
-//        try {
-//            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-//            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-//            String token = jwtUtil.generateToken(userDetails.getUsername());
-//            return ResponseEntity.ok(new JwtAuthenticationResponse(token));
-//        } catch (BadCredentialsException ex) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Bad credentials");
-//        }
-//    }
-//}
+@RestController
+@RequestMapping(value = "/auth")
+public class AuthController {
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
+    private UserDetailServiceImpl userDetailsService;
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<AuthResponse> login(
+            @Parameter(required = true) @RequestBody @Valid AuthLoginRequest userRequest) {
+        return new ResponseEntity<>(userDetailsService.loginUser(userRequest), HttpStatus.OK);
+    }
+}

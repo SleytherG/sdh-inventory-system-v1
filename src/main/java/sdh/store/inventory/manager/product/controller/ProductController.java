@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sdh.store.inventory.manager.product.dto.*;
 import sdh.store.inventory.manager.product.service.ProductService;
@@ -23,7 +22,6 @@ import static sdh.store.inventory.manager.util.Constants.*;
 @RestController
 @Tag(name = "Product")
 @RequestMapping
-//@PreAuthorize("denyAll()")
 public class ProductController {
 
     @Autowired
@@ -31,7 +29,6 @@ public class ProductController {
 
     @GetMapping(value = "/products",
         produces = { MediaType.APPLICATION_JSON_VALUE })
-//    @PreAuthorize("permitAll()")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all products", method = "GET",
         responses = {
@@ -51,7 +48,6 @@ public class ProductController {
     @PostMapping(value = "/products",
             produces = { MediaType.APPLICATION_JSON_VALUE },
             consumes = { MediaType.APPLICATION_JSON_VALUE })
-//    @PreAuthorize("hasAnyAuthority('CREATE')")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a product", method = "POST", responses = {
             @ApiResponse(responseCode = "200", description = "&Eacute;xito.", content = {
@@ -73,7 +69,6 @@ public class ProductController {
 
     @GetMapping(value = "/products/{id}",
             produces = { MediaType.APPLICATION_JSON_VALUE })
-//    @PreAuthorize("hasAnyAuthority('CREATE')")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get a product by ID", method = "GET", responses = {
             @ApiResponse(responseCode = "200", description = "&Eacute;xito.", content = {

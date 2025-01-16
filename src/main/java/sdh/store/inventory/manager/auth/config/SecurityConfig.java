@@ -2,8 +2,6 @@ package sdh.store.inventory.manager.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,9 +12,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import sdh.store.inventory.manager.auth.service.UserDetailServiceImpl;
 
 
@@ -25,32 +23,55 @@ import sdh.store.inventory.manager.auth.service.UserDetailServiceImpl;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+
+    private JwtUtils jwtUtils;
+
+    public SecurityConfig(JwtUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(http -> {
-                    // Configurar los endpoints publicos
-                    http.requestMatchers(HttpMethod.GET, "/auth/login").permitAll();
-
-                    // Configurar los endpoints privados
-                    http.requestMatchers(HttpMethod.GET, "/auth/login").hasAuthority("CREATE");
-
-                    // Configurar el resto de endpoints - NO ESPECIFICADOS
-                    http.anyRequest().authenticated();
-                })
+                .authorizeHttpRequests(http -> http
+                    .requestMatchers("/auth/**").permitAll()
+                    .anyRequest().authenticated()
+                )
+//                .anonymous(anonymous -> anonymous.disable())
+                .addFilterBefore(new JwtTokenValidator(jwtUtils), UsernamePasswordAuthenticationFilter.class)
+//                .exceptionHandling(handling -> handling
+//                        .authenticationEntryPoint((request, response, authException) -> {
+//                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                            response.getWriter().write("Auth error: " + authException.getMessage());
+//                        })
+//                )
+                .securityContext(context -> context.requireExplicitSave(false))
                 .build();
     }
 
 //    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-//        return httpSecurity
-//                .csrf(csrf -> csrf.disable())
-//                .httpBasic(Customizer.withDefaults())
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .build();
+//    public SecurityContextRepository securityContextRepository() {
+//        return new WebSessionSecurityContextRepository();
+//    }
+
+//    @Bean
+//    public DelegatingSecurityContextAsyncTaskExecutor taskExecutor(
+//            @Qualifier("threadPoolTaskExecutor") ThreadPoolTaskExecutor delegate) {
+//        return new DelegatingSecurityContextAsyncTaskExecutor(delegate);
+//    }
+//
+//    @Bean
+//    public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
+//        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+//        executor.setCorePoolSize(5);
+//        executor.setMaxPoolSize(10);
+//        executor.setQueueCapacity(25);
+//        executor.setThreadNamePrefix("async-thread-");
+//        executor.initialize();
+//        return executor;
 //    }
 
     @Bean
@@ -66,29 +87,10 @@ public class SecurityConfig {
         return provider;
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        List<UserDetails> userDetails = new ArrayList<>();
-//        userDetails.add(User
-//                .withUsername("sleyther")
-//                .password("1234")
-//                .roles("ADMIN")
-//                .authorities("READ", "CREATE")
-//                .build());
-//
-//        userDetails.add(User
-//                .withUsername("daniel")
-//                .password("1234")
-//                .roles("USER")
-//                .authorities("READ")
-//                .build());
-//
-//        return new InMemoryUserDetailsManager(userDetails);
-//    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 }
