@@ -17,6 +17,7 @@ import java.util.Set;
 @MapperScan({
 		"sdh.store.inventory.manager.product.mappers",
 		"sdh.store.inventory.manager.user.mappers",
+		"sdh.store.inventory.manager.category.mappers"
 })
 public class SdhStoreInventoryManagerV1Application {
 

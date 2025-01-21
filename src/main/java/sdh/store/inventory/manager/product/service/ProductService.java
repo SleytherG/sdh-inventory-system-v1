@@ -1,21 +1,20 @@
 package sdh.store.inventory.manager.product.service;
 
 import com.github.pagehelper.PageInfo;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Maybe;
+import reactor.core.publisher.Mono;
 import sdh.store.inventory.manager.product.dto.ProductCreateDTO;
 import sdh.store.inventory.manager.product.dto.ProductDTO;
 import sdh.store.inventory.manager.product.dto.ProductUpdateDTO;
 
 public interface ProductService {
 
-    Flowable<PageInfo<ProductDTO>> findAllProducts(int page, int size);
+    Mono<PageInfo<ProductDTO>> findAllProducts(int page, int size);
 
-    Maybe<Integer> createProduct(ProductCreateDTO product);
+    Mono<Integer> createProduct(ProductCreateDTO product);
 
-    Maybe<ProductDTO> getProductById(Long id);
+    Mono<ProductDTO> getProductById(Long id);
 
-    Maybe<Integer> updateProduct(Long id, ProductUpdateDTO product);
+    Mono<Integer> updateProduct(Long id, ProductUpdateDTO product);
 
-    Maybe<Integer> deleteProduct(Long id);
+    Mono<Integer> deleteProduct(Long id);
 }

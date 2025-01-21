@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CategoryDTO {
+public class CategoryCreateDTO {
 
-    private Long id;
     private String name;
     private String description;
-    private Boolean isActive;
 
 }

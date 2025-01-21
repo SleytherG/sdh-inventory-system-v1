@@ -28,18 +28,6 @@
     </resultMap>
 
 
-    <!--    <sql id="commonColumnsOfProduct">-->
-<!--            P.ID_PRODUCT          AS ID,-->
-<!--            P.NAME                AS NAME,-->
-<!--            P.DESCRIPTION         AS DESCRIPTION,-->
-<!--            P.PRICE               AS PRICE,-->
-<!--            P.STOCK               AS STOCK,-->
-<!--            P.ACTIVE              AS ACTIVE,-->
-<!--            C.ID_CATEGORY         AS CATEGORY,-->
-<!--            S.ID_SUPPLIER         AS SUPPLIER-->
-<!--    </sql>-->
-
-
 <!--    <select id="findAllProducts" resultMap="ProductDTOResultMap">-->
 <!--        SELECT-->
 <!--            P.ID                  AS ID_PRODUCT,-->
