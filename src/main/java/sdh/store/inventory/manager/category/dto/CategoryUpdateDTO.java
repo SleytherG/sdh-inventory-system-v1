@@ -13,5 +13,6 @@ public class CategoryUpdateDTO {
 
     private String name;
     private String description;
+    private Boolean isActive;
 
 }
