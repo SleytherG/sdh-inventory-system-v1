@@ -9,13 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SupplierDTO {
+public class SupplierCreateResponseDTO {
 
-    private Long id;
-    private String name;
-    private String contact;
-    private String phoneNumber;
-    private String address;
-    private Boolean isActive;
-
+    private String message;
+    private Integer code;
 }

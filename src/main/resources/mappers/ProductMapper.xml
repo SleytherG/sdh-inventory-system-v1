@@ -70,14 +70,15 @@
             S.ADDRESS             AS SUPPLIER_ADDRESS
         FROM PRODUCT P
                  LEFT JOIN CATEGORY C ON C.ID = P.CATEGORY_ID
-                 LEFT JOIN SUPPLIER S ON S.ID = P.SUPPLIER_ID
+                 LEFT JOIN SUPPLIER_PRODUCT SP ON SP.ID_PRODUCT = P.ID
+                 LEFT JOIN SUPPLIER S ON S.ID = SP.ID_SUPPLIER
         WHERE P.IS_ACTIVE = TRUE
         ORDER BY P.ID
     </select>
 
     <insert id="createProduct" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO PRODUCT (NAME, DESCRIPTION, PRICE, STOCK_QUANTITY, CATEGORY_ID, SUPPLIER_ID, IS_ACTIVE)
-        VALUES (#{product.name}, #{product.description}, #{product.price}, #{product.stockQuantity}, #{product.categoryId}, #{product.supplierId}, #{product.isActive})
+        INSERT INTO PRODUCT (NAME, DESCRIPTION, PRICE, STOCK_QUANTITY, CATEGORY_ID, IS_ACTIVE)
+        VALUES (#{product.name}, #{product.description}, #{product.price}, #{product.stockQuantity}, #{product.categoryId}, #{product.isActive})
     </insert>
 
     <select id="getProductById" resultMap="ProductDTOResultMap">
@@ -98,7 +99,8 @@
             S.ADDRESS             AS SUPPLIER_ADDRESS
         FROM PRODUCT P
          LEFT JOIN CATEGORY C ON C.ID = P.CATEGORY_ID
-         LEFT JOIN SUPPLIER S ON S.ID = P.SUPPLIER_ID
+         LEFT JOIN SUPPLIER_PRODUCT SP ON SP.ID_PRODUCT = P.ID
+         LEFT JOIN SUPPLIER S ON S.ID = SP.ID_SUPPLIER
         WHERE P.ID = #{id}
         AND P.IS_ACTIVE = TRUE
     </select>
@@ -111,7 +113,6 @@
             PRICE = #{product.price},
             STOCK_QUANTITY = #{product.stockQuantity},
             CATEGORY_ID = #{product.categoryId},
-            SUPPLIER_ID = #{product.supplierId},
             IS_ACTIVE = #{product.isActive}
         WHERE ID = #{id}
     </update>

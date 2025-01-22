@@ -28,41 +28,41 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Mono<PageInfo<ProductDTO>> findAllProducts(int page, int size) {
         return Mono.fromCallable(() -> PaginationUtils.toPageInfo(page, size, productMapper::findAllProducts))
-                .subscribeOn(Schedulers.boundedElastic())
-                .switchIfEmpty(Mono.defer(Mono::empty));
+                .switchIfEmpty(Mono.defer(Mono::empty))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     @Override
     @Transactional
     public Mono<Integer> createProduct(ProductCreateDTO product) {
         return Mono.fromCallable(() -> productMapper.createProduct(product))
-                .subscribeOn(Schedulers.boundedElastic())
-                .doOnError(RuntimeException::new);
+                .doOnError(RuntimeException::new)
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     @Override
     public Mono<ProductDTO> getProductById(Long id) {
         return Mono.fromCallable(() -> productMapper.getProductById(id))
-                .subscribeOn(Schedulers.boundedElastic())
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .switchIfEmpty(Mono.defer(Mono::empty));
+                .switchIfEmpty(Mono.defer(Mono::empty))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     @Override
     @Transactional
     public Mono<Integer> updateProduct(Long id, ProductUpdateDTO product) {
         return Mono.fromCallable(() -> productMapper.updateProduct(id, product))
-                .subscribeOn(Schedulers.boundedElastic())
-                .doOnError(RuntimeException::new);
+                .doOnError(RuntimeException::new)
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     @Override
     @Transactional
     public Mono<Integer> deleteProduct(Long id) {
         return Mono.fromCallable(() -> productMapper.deleteProduct(id))
-                .subscribeOn(Schedulers.boundedElastic())
-                .doOnError(RuntimeException::new);
+                .doOnError(RuntimeException::new)
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
 
