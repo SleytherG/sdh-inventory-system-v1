@@ -2,15 +2,17 @@ package sdh.store.inventory.manager.movement.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import sdh.store.inventory.manager.movement.enumerate.MovementType;
 import sdh.store.inventory.manager.product.dto.ProductDTO;
 import sdh.store.inventory.manager.user.dto.UserDTO;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
