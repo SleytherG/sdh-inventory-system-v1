@@ -10,14 +10,14 @@ import sdh.store.inventory.manager.proxy.model.Product;
 import sdh.store.inventory.manager.proxy.service.ProductService;
 
 @RestController
-@RequestMapping("/productsOpenFoodFacts")
+@RequestMapping()
 public class ProductOpenFoodFactsController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/{barcode}")
-    public Mono<Product> getProduct(@PathVariable String barcode) {
+    @GetMapping("/getOpenFoodFactProduct/{barcode}")
+    public Mono<Product> getOpenFoodFactProduct(@PathVariable String barcode) {
         return productService.getProductByBarcode(barcode);
     }
 }

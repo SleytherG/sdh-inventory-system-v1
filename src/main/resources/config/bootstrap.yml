@@ -25,6 +25,11 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: sdh.store.inventory.manager.model
 
+
+base:
+  url:
+    openFoodFacts: https://world.openfoodfacts.org/
+
 server:
   port: 9090
 
