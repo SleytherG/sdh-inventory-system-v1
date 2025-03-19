@@ -29,4 +29,14 @@ public class GlobalExceptionHandler {
                 .build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedException(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getDescription(false))
+                .build(), HttpStatus.UNAUTHORIZED);
+    }
+
 }
