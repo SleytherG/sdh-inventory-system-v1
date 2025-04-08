@@ -15,15 +15,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductDTO {
+public class ProductMovementDTO {
 
     private Long id;
     private String name;
     private String description;
     private BigDecimal price;
     private Integer stockQuantity;
-    private CategoryDTO category;
-    private SupplierDTO supplier;
     private Boolean isActive;
 }
 

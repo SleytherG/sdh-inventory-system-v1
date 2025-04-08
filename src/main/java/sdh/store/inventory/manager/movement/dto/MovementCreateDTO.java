@@ -16,14 +16,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MovementTypeDTO {
+public class MovementCreateDTO {
 
     private Long id;
-    private ProductDTO product;
+    private Integer productId;
     private Integer quantity;
-    private MovementType movementType;
+    private String movementType;
     private final LocalDateTime movementDate = LocalDateTime.now();
-    private UserDTO user;
+    private Integer userId;
     private String description;
+    private String referenceDocument;
 
 }

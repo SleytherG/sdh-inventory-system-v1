@@ -18,7 +18,8 @@ import java.util.Set;
 		"sdh.store.inventory.manager.product.mappers",
 		"sdh.store.inventory.manager.user.mappers",
 		"sdh.store.inventory.manager.category.mappers",
-		"sdh.store.inventory.manager.supplier.mappers"
+		"sdh.store.inventory.manager.supplier.mappers",
+		"sdh.store.inventory.manager.movement.mappers"
 })
 public class SdhStoreInventoryManagerV1Application {
 

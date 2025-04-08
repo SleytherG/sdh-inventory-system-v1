@@ -11,4 +11,5 @@ public class Constants {
     public static final String SUPPLIER_CREATED_SUCCESSFULLY = "Supplier created successfully";
     public static final String SUPPLIER_UPDATED_SUCCESSFULLY = "Supplier updated successfully";
     public static final String SUPPLIER_DELETED_SUCCESSFULLY = "Supplier deleted successfully";
+    public static final String MOVEMENT_CREATED_SUCCESSFULLY = "Movement created successfully";
 }
