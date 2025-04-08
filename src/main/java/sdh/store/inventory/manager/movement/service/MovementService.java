@@ -1,8 +1,8 @@
 package sdh.store.inventory.manager.movement.service;
 
 import com.github.pagehelper.PageInfo;
-import io.micrometer.observation.ObservationFilter;
 import reactor.core.publisher.Mono;
+import sdh.store.inventory.manager.movement.dto.CurrentStockDTO;
 import sdh.store.inventory.manager.movement.dto.MovementCreateDTO;
 import sdh.store.inventory.manager.movement.dto.MovementDTO;
 
@@ -17,4 +17,6 @@ public interface MovementService {
     Mono<List<MovementDTO>> findMovementsByProductId(Long productId);
 
     Mono<List<MovementDTO>> findMovementsByReferenceDocument(String referenceDocument);
+
+    Mono<CurrentStockDTO> getCurrentStockByProductId(Long productId);
 }

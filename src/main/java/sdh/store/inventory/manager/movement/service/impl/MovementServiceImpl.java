@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import sdh.store.inventory.manager.movement.dto.CurrentStockDTO;
 import sdh.store.inventory.manager.movement.dto.MovementCreateDTO;
 import sdh.store.inventory.manager.movement.dto.MovementDTO;
 import sdh.store.inventory.manager.movement.mappers.MovementMapper;
@@ -51,5 +52,10 @@ public class MovementServiceImpl implements MovementService {
         return Mono.fromCallable(() -> movementMapper.findMovementsByReferenceDocument(referenceDocument))
                 .switchIfEmpty(Mono.defer(Mono::empty))
                 .subscribeOn(Schedulers.boundedElastic());
+    }
+
+    @Override
+    public Mono<CurrentStockDTO> getCurrentStockByProductId(Long productId) {
+        return Mono.just(movementMapper.getCurrentStockByProductId(productId));
     }
 }

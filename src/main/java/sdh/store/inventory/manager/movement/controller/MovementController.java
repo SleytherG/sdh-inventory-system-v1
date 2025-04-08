@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import sdh.store.inventory.manager.movement.dto.CurrentStockDTO;
 import sdh.store.inventory.manager.movement.dto.MovementCreateDTO;
 import sdh.store.inventory.manager.movement.dto.MovementCreateResponseDTO;
 import sdh.store.inventory.manager.movement.dto.MovementDTO;
@@ -108,6 +110,22 @@ public class MovementController {
     public Mono<List<MovementDTO>> findMovementsByReferenceDocument(
             @Parameter(required = true) @PathVariable("referenceDocument") String referenceDocument) {
         return movementService.findMovementsByReferenceDocument(referenceDocument);
+    }
+
+    @GetMapping(value = "/movements/currentStockByProductId",
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get current stock by product", method = "GET",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "&Eacute;xito.", content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = MovementDTO.class))}),
+                    @ApiResponse(responseCode = "500", description = "Ha ocurrido un error inesperado.", content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Error.class))})})
+    public Mono<CurrentStockDTO> getCurrentStockByProductId(
+            @Parameter(required = true) @Param("productId") Long productId) {
+        return movementService.getCurrentStockByProductId(productId);
     }
 
 

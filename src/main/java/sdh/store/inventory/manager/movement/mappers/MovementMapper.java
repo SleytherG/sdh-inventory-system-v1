@@ -2,6 +2,8 @@ package sdh.store.inventory.manager.movement.mappers;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import reactor.core.publisher.Mono;
+import sdh.store.inventory.manager.movement.dto.CurrentStockDTO;
 import sdh.store.inventory.manager.movement.dto.MovementCreateDTO;
 import sdh.store.inventory.manager.movement.dto.MovementDTO;
 
@@ -22,4 +24,7 @@ public interface MovementMapper {
 
     List<MovementDTO> findMovementsByReferenceDocument(
             @Param("referenceDocument") String referenceDocument);
+
+    CurrentStockDTO getCurrentStockByProductId(
+            @Param("productId") Long productId);
 }
