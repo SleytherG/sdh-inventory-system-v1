@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sdh.store.inventory.manager.user.mappers.UserMapper">
+
+    <resultMap id="PermissionResultMap" type="sdh.store.inventory.manager.user.dto.PermissionDTO">
+        <id property="id" column="ID_PERMISSION" />
+        <result property="permissionName" column="PERMISSION_NAME" />
+    </resultMap>
+
+    <resultMap id="RoleResultMap" type="sdh.store.inventory.manager.user.dto.RoleDTO">
+        <id property="id" column="ID_ROLE" />
+        <result property="roleName" column="ROLE_NAME" />
+        <collection property="permissions" ofType="sdh.store.inventory.manager.user.dto.PermissionDTO" resultMap="PermissionResultMap" />
+    </resultMap>
+
+    <resultMap id="UserDTOResultMap" type="sdh.store.inventory.manager.user.dto.UserDTO">
+        <id property="id" column="ID" />
+        <result property="username" column="USERNAME" />
+        <result property="fullName" column="FULL_NAME" />
+        <result property="password" column="PASSWORD" />
+        <result property="isEnabled" column="IS_ENABLED" />
+        <result property="accountNoExpired" column="ACCOUNT_NO_EXPIRED" />
+        <result property="accountNoLocked" column="ACCOUNT_NO_LOCKED" />
+        <result property="credentialsNoExpired" column="CREDENTIALS_NO_EXPIRED" />
+        <collection property="roles" ofType="sdh.store.inventory.manager.user.dto.RoleDTO" resultMap="RoleResultMap" />
+    </resultMap>
+
+    <select id="findByUsername" resultMap="UserDTOResultMap">
+        SELECT
+            U.ID                        AS ID,
+            U.USERNAME                  AS USERNAME,
+            U.FULL_NAME                 AS FULL_NAME,
+            U.PASSWORD                  AS PASSWORD,
+            U.IS_ENABLED                AS IS_ENABLED,
+            U.ACCOUNT_NO_EXPIRED        AS ACCOUNT_NO_EXPIRED,
+            U.ACCOUNT_NO_LOCKED         AS ACCOUNT_NO_LOCKED,
+            U.CREDENTIALS_NO_EXPIRED    AS CREDENTIALS_NO_EXPIRED,
+            R.ID                        AS ID_ROLE,
+            R.ROLE_NAME                 AS ROLE_NAME,
+            P.ID                        AS ID_PERMISSION,
+            P.NAME                      AS PERMISSION_NAME
+        FROM USER_STORE U
+                 LEFT JOIN USER_ROLES UR ON U.ID = UR.USER_ID
+                 LEFT JOIN ROLES R ON UR.ROLE_ID = R.ID
+                 LEFT JOIN ROLE_PERMISSIONS RP ON R.ID = RP.ROLE_ID
+                 LEFT JOIN PERMISSIONS P ON RP.PERMISSION_ID = P.ID
+        WHERE U.USERNAME = #{username}
+        ORDER BY U.ID, R.ID, P.ID
+    </select>
+
+
+
+
+</mapper>
